@@ -1,4 +1,8 @@
-export const makeQueryTemplate = (query: string) => `
+export const makeQueryTemplate = (
+  searchQuery: string,
+  paginationKeyword: string,
+  paginationString: string
+) => `
 {
   viewer {
     login
@@ -13,7 +17,8 @@ export const makeQueryTemplate = (query: string) => `
       }
     }
   }
-  search(type: REPOSITORY, query: "${query}", first: 1) {
+  search(type: REPOSITORY ${paginationKeyword}: 10, ${paginationString},
+         query: "${searchQuery}") {
     edges {
       node {
         ... on Repository {
@@ -21,7 +26,10 @@ export const makeQueryTemplate = (query: string) => `
           name
           stargazerCount
           url
-          commitComments(first: 1) {
+          nameWithOwner
+          description
+          forkCount
+          commitComments(last: 1) {
             edges {
               node {
                 commit {
@@ -39,6 +47,7 @@ export const makeQueryTemplate = (query: string) => `
       hasPreviousPage
       startCursor
     }
+  repositoryCount
   }
 }
 `;

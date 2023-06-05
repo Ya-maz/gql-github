@@ -6,10 +6,10 @@ import { URL } from "../constants";
 
 export const fetcher = async (query: any, url = URL) =>
   await fetch(url, {
-      method: "POST",
-      headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_REACT_APP_GITHUB_TOKEN}`,
-      },
-      body: JSON.stringify({ query }),
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${import.meta.env.VITE_REACT_APP_GITHUB_TOKEN}`,
+    },
+    body: JSON.stringify({ query }),
   }).then((res) => res.json());

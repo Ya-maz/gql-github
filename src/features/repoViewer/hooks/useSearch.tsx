@@ -5,25 +5,32 @@ import { fetcher } from "../../../shared/utils";
 
 import { makeQueryTemplate } from "../utils";
 
-export const useSearch = (query: string) => {
+export const useSearch = (
+  searchQuery: string,
+  paginationKeyword: string,
+  paginationString: string
+) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState<unknown>(null);
   const [status, setStatus] = useState<TSTATUS>(STATUS.IDLE);
 
-  const research = async (query: string) => {
-    try {
-      setStatus(STATUS.LOADING);
-      const res = await fetcher(makeQueryTemplate(query));
-      setData(res);
-      setError(null);
-      setStatus(STATUS.SUCCESS);
-    } catch (err) {
-      setError(err);
-      setStatus(STATUS.ERROR);
-    }
-  };
   useEffect(() => {
-    research(query);
-  }, [query]);
-  return { data, status, error, research };
+    const research = async () => {
+      try {
+        setStatus(STATUS.LOADING);
+        const res = await fetcher(
+          makeQueryTemplate(searchQuery, paginationKeyword, paginationString)
+        );
+        setData(res);
+        setError(null);
+        setStatus(STATUS.SUCCESS);
+      } catch (err) {
+        setError(err);
+        setStatus(STATUS.ERROR);
+      }
+    };
+    research();
+  }, [searchQuery, paginationKeyword, paginationString]);
+
+  return { data, status, error };
 };
