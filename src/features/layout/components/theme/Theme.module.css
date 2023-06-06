@@ -1,0 +1,8 @@
+.theme {
+	position: sticky;
+	display: flex;
+	gap: var(--round-sm);
+	align-items: center;
+	justify-content: end;
+
+}
