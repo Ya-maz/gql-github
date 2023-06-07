@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 
 import { useDebounce } from "../../shared/hooks";
-import { SearchBar, RepoList, Loading } from "../../shared/UI";
+import { localS } from "../../shared/utils";
+import { SearchBar, Loading, Button } from "../../shared/UI";
 
+import { RepoTable } from "./components";
 import { useSearch } from "./hooks";
 
 export const RepoViewer = () => {
-  const [searchQuery, setSearchQuery] = useState("react");
-  const query = useDebounce(searchQuery);
-
+  const [searchQuery, setSearchQuery] = useState(localS.get() ?? "react");
   const [paginationKeyword, setPaginationKeyword] = useState("first");
   const [paginationString, setPaginationString] = useState("");
   const [startCursor, setStartCursor] = useState("");
@@ -16,24 +16,17 @@ export const RepoViewer = () => {
   const [hasPreviousPage, setPreviousPage] = useState(false);
   const [hasNextPage, setNextPage] = useState(false);
 
+  const query = useDebounce(searchQuery);
   const { data, error, status } = useSearch(
     query,
     paginationKeyword,
     paginationString
   );
-
-  const style = {
-    border: "1px solid #eee",
-    margin: "20px",
-    padding: "40px",
+  const isSearchNotEmpty = data?.data?.search?.edges?.length > 0;
+  const setPagination = (key: string, value: string, cursor: string) => () => {
+    setPaginationKeyword(key);
+    setPaginationString(value + ': "' + cursor + '"');
   };
-
-  const blockStyle = {
-    margin: "0 0 20px",
-  };
-
-  const isSearchNotResultEmpty = data?.data?.search?.edges?.length > 0;
-  console.log("data", data?.data);
   useEffect(() => {
     if (!data?.data?.search?.pageInfo) return;
     const pageInfo = data.data.search.pageInfo;
@@ -44,51 +37,35 @@ export const RepoViewer = () => {
   }, [data]);
 
   return (
-    <div style={style}>
-      <div style={blockStyle}>
+    <div className="container">
+      <div style={{ margin: "0 0 20px" }}>
         <SearchBar query={searchQuery} change={setSearchQuery} />
       </div>
-      {isSearchNotResultEmpty && (
+      {isSearchNotEmpty && (
         <div>
-          <b className="me-2 text-secondary">
-            search result count: {data?.data?.search?.repositoryCount}
-          </b>
+          <b>search result count: {data?.data?.search?.repositoryCount}</b>
         </div>
       )}
 
-      <div style={blockStyle}>
+      <div style={{ margin: "0 0 20px" }}>
         {status === "loading" ? <Loading /> : null}
         {error ? <div>{error}</div> : null}
         {data?.data?.search?.edges?.length > 0 ? (
-          <RepoList edges={data?.data?.search?.edges} />
+          <RepoTable edges={data?.data?.search?.edges} />
         ) : (
-          <RepoList edges={data?.data?.viewer?.edges} />
+          <RepoTable edges={data?.data?.viewer?.edges} />
         )}
       </div>
-      <div className="d-flex justify-content-center my-2">
-        {hasPreviousPage && (
-          <button
-            className="btn mx-1 btn-sm btn-primary bi bi-arrow-left"
-            onClick={() => {
-              setPaginationKeyword("last");
-              setPaginationString('before: "' + startCursor + '"');
-            }}
-          >
-            Previous
-          </button>
-        )}
-        {hasNextPage && (
-          <button
-            className="btn mx-1 btn-sm btn-primary bi bi-arrow-right"
-            onClick={() => {
-              setPaginationKeyword("first");
-              setPaginationString('after: "' + endCursor + '" ');
-            }}
-          >
-            Next
-          </button>
-        )}
-      </div>
+      {hasPreviousPage && (
+        <Button onClick={setPagination("last", "before", startCursor)}>
+          Previous
+        </Button>
+      )}
+      {hasNextPage && (
+        <Button onClick={setPagination("first", "after", endCursor)}>
+          Next
+        </Button>
+      )}
     </div>
   );
 };

@@ -36,6 +36,8 @@
   --warning:#ffaa00;
   --primary-main: #646cff;
   --primary-dark: #535bf2;
+  --box-shadow-light: #004373;
+  --box-shadow-dark: #d5b5e8;
 
 
   /* utils */
@@ -52,11 +54,13 @@
 html[data-theme="dark"]{
     --bkg: var(--bkg-dark);
     --text: var(--text-dark);
+    --box-shadow: var(--box-shadow-dark)
 }
 
 html[data-theme="light"]{
     --bkg: var(--bkg-light);
     --text: var(--text-light);
+    --box-shadow: var(--box-shadow-light)
 }
 
 @media (prefers-color-scheme: light) {

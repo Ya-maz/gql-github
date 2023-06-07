@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { STATUS, TSTATUS } from "../../../shared/models";
-import { fetcher } from "../../../shared/utils";
+import { fetcher, localS } from "../../../shared/utils";
 
 import { makeQueryTemplate } from "../utils";
 
@@ -18,6 +18,7 @@ export const useSearch = (
     const research = async () => {
       try {
         setStatus(STATUS.LOADING);
+        localS.set(searchQuery);
         const res = await fetcher(
           makeQueryTemplate(searchQuery, paginationKeyword, paginationString)
         );

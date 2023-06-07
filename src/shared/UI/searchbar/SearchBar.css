@@ -1,0 +1,5 @@
+.search {
+  border-radius: var(--round-md);
+  font-size: var(--fs-400);
+  padding: var(--space-sm);
+}

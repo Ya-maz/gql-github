@@ -1,0 +1,25 @@
+.table {
+  padding: var(--round-md);
+  background-color: var(--color-white);
+  width: 100%;
+  border-radius: var(--round-md);
+  border-collapse: collapse;
+  margin: 0 auto;
+  box-shadow: 0 2px 10px var(--box-shadow);
+}
+
+.table__header {
+  text-transform: uppercase;
+  font-size: var(--fs-200);
+}
+
+.table__row {
+  border-bottom: 1px solid var(--box-shadow);
+}
+.table__row:last-child {
+  border-bottom: none;
+}
+
+.table__cell {
+  padding: 1rem 1.5rem;
+}

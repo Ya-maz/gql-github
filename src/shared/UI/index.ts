@@ -1,3 +1,3 @@
 export { Loading } from "./loading";
-export { RepoList } from "./list";
 export { SearchBar } from "./searchbar";
+export { Button } from "./button";

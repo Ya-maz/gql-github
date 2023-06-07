@@ -1,12 +1,9 @@
  .card {
   flex: 1 1 300px;
-  position: relative;
-  background-color: hsl(var(--bkg));
-  box-shadow: 2px 2px 40px hsl(var(--muted) / .5);
+  background-color: var(--bkg);
+  box-shadow: 2px 2px 40px var(--muted);
   padding: var(--space-lg);
   border-radius: var(--round-lg);
-  border-top: .1em solid white;
-  border-left: .1em solid white;
   max-width: var(--content);
 }
 

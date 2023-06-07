@@ -1,0 +1,24 @@
+button {
+  border-radius: var(--round-md);
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: var(--fs-300);
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--text-light);
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+button:hover {
+  border-color: var(--primary-main);
+}
+
+button:disabled,
+button[disabled]{
+  background-color: var(--muted);
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
